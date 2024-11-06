@@ -10,24 +10,14 @@ class CameraManager {
     this.currentLookingAt = new Vector3();
     this.offset = 0;
 
-    this.keyPositions = [
-      { x: 0, y: 4, z: 30 },
-      { x: 0, y: 2, z: 8 },
-      { x: 8, y: 1, z: 8 },
-    ];
-
-    this.keyLookAt = [
-      { x: 0, y: 0, z: 28 },
-      { x: 0, y: 1, z: 0 },
-      { x: 0, y: 2, z: 0 },
-    ];
-
     this.cameras = {
       instanceCamera: null,
       mainCamera: null,
       projectionCamera: null,
       reflectionCamera: null,
     };
+
+    this.animateTo = this.animateTo.bind(this);
   }
 
   getPerspectiveCamera() {
@@ -43,7 +33,7 @@ class CameraManager {
     return new OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
   }
 
-  createCameras() {
+  createCameras({ startPosition, startKeyLookAt }) {
     // Create Perspective Camera
     this.cameras.instanceCamera = this.getPerspectiveCamera();
 
@@ -57,20 +47,16 @@ class CameraManager {
     this.cameras.reflectionCamera = this.getPerspectiveCamera();
 
     // Set initial camera animation parameters
-    this.setupCameraAnimation();
+    this.setupCameraAnimation({ startPosition, startKeyLookAt });
   }
 
-  setupCameraAnimation() {
-    this.currentPosition.set(
-      this.keyPositions[0].x,
-      this.keyPositions[0].y,
-      this.keyPositions[0].z,
-    );
+  setupCameraAnimation({ startPosition, startKeyLookAt }) {
+    this.currentPosition.set(startPosition.x, startPosition.y, startPosition.z);
 
     this.currentLookingAt.set(
-      this.keyLookAt[0].x,
-      this.keyLookAt[0].y,
-      this.keyLookAt[0].z,
+      startKeyLookAt.x,
+      startKeyLookAt.y,
+      startKeyLookAt.z,
     );
   }
 
@@ -87,14 +73,12 @@ class CameraManager {
     );
   }
 
-  animateToStep(stepIndex) {
-    if (stepIndex >= this.keyPositions.length || stepIndex < 0) return;
-
+  animateTo(keyPositions, keyLookAt) {
     gsap.to(this.currentPosition, {
       duration: 3,
-      x: this.keyPositions[stepIndex].x,
-      y: this.keyPositions[stepIndex].y,
-      z: this.keyPositions[stepIndex].z,
+      x: keyPositions.x,
+      y: keyPositions.y,
+      z: keyPositions.z,
       ease: "power2.inOut",
       onUpdate: () => {
         if (this.cameras.instanceCamera) {
@@ -105,9 +89,9 @@ class CameraManager {
 
     gsap.to(this.currentLookingAt, {
       duration: 3.2,
-      x: this.keyLookAt[stepIndex].x,
-      y: this.keyLookAt[stepIndex].y,
-      z: this.keyLookAt[stepIndex].z,
+      x: keyLookAt.x,
+      y: keyLookAt.y,
+      z: keyLookAt.z,
       ease: "power2.inOut",
       onUpdate: () => {
         if (this.cameras.instanceCamera) {

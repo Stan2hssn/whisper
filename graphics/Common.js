@@ -1,8 +1,9 @@
 import Managers from "./pure/Managers.js";
 
 import Device from "./pure/Device.js";
-import DOM from "./DOM.js";
 import { Pane } from "tweakpane";
+
+import Step from "./pure/Step.js";
 
 class Common {
   constructor() {
@@ -13,7 +14,7 @@ class Common {
       cameraFar: 800.0,
     };
 
-    this.stepManager = Managers.Step();
+    this.stepManager = Managers.StepManager();
     this.sceneManager = Managers.Scene(this.params);
     this.cameraManager = Managers.Camera(this.params);
     this.rendererManager = Managers.Renderer();
@@ -26,32 +27,35 @@ class Common {
     this.sceneManager.setupScenes();
 
     // Create Cameras
-    this.cameraManager.createCameras();
-
-    // Enregistrer les callbacks des steps dans le StepManager
-    this.stepManager.addStepCallback(0, () => {
-      console.log("Step 0 : Initialiser la caméra");
-      this.cameraManager.animateToStep(0);
-      if (DOM.Component.emotion.isSetup) {
-        DOM.updateComponent(this.stepManager.currentStep);
-      }
+    this.cameraManager.createCameras({
+      startPosition: { x: 0, y: 4, z: 30 },
+      startKeyLookAt: { x: 0, y: 0, z: 28 },
     });
 
-    this.stepManager.addStepCallback(1, () => {
-      console.log("Step 1 : Animer vers la position 1");
-      this.cameraManager.animateToStep(1);
-      if (DOM.Component.emotion.isSetup) {
-        DOM.updateComponent(this.stepManager.currentStep);
-      }
-    });
+    // Add steps
+    this.stepManager.addStep(
+      new Step({
+        keyPositions: { x: 0, y: 4, z: 30 },
+        keyLookAt: { x: 0, y: 0, z: 28 },
+        componentToShow: undefined,
+      }),
+    );
+    this.stepManager.addStep(
+      new Step({
+        keyPositions: { x: 0, y: 2, z: 8 },
+        keyLookAt: { x: 0, y: 1, z: 0 },
+        componentToShow: "emotions",
+      }),
+    );
+    this.stepManager.addStep(
+      new Step({
+        keyPositions: { x: 8, y: 1, z: 8 },
+        keyLookAt: { x: 0, y: 2, z: 0 },
+        componentToShow: "text",
+      }),
+    );
 
-    this.stepManager.addStepCallback(2, () => {
-      console.log("Step 2 : Animer vers la position 2");
-      this.cameraManager.animateToStep(2);
-      if (DOM.Component.emotion.isSetup) {
-        DOM.updateComponent(this.stepManager.currentStep);
-      }
-    });
+    console.log("this.stepManager", this.stepManager);
   }
 
   render(t) {

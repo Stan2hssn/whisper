@@ -1,4 +1,4 @@
-import Emotion from "./DOM/emotion.js";
+import Emotions from "./DOM/emotions.js";
 
 class DOM {
   Component = {};
@@ -6,23 +6,23 @@ class DOM {
   constructor() {}
 
   init() {
-    this.Component.emotion = new Emotion();
+    this.Component.emotions = new Emotions();
   }
 
-  updateComponent(step) {
+  updateComponent(componentToShow) {
     // Handle component updates if needed
-    console.log("Step updated to:", step);
     Object.keys(this.Component).forEach((key) => {
-      if (typeof this.Component[key].update === "function") {
-        this.Component[key].update(step);
+      if (
+        typeof this.Component[key].show &&
+        typeof this.Component[key].hide === "function"
+      ) {
+        if (key !== componentToShow) {
+          this.Component[key].hide();
+        } else {
+          this.Component[key].show();
+        }
       }
     });
-  }
-
-  dispose() {
-    if (this.Component.emotion) {
-      this.Component.emotion.dispose();
-    }
   }
 
   render(t) {

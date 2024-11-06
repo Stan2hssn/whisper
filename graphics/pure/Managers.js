@@ -7,7 +7,7 @@ const Managers = {
   Camera: (params) => new CameraManager(params),
   Scene: (params) => new SceneManager(params),
   Renderer: () => new RendererManager(),
-  Step: () => new StepManager(),
+  StepManager: () => new StepManager(),
 };
 
 export default Managers;

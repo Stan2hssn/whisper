@@ -1,12 +1,14 @@
+import Common from "../Common";
+
 export default class StepManager {
-  constructor() {
-    this.currentStep = 0;
+  constructor(cameraManager) {
+    this.currentStep = 1;
     this.lastTriggeredStep = -1; // Track which step was last triggered
     this.steps = [];
   }
 
-  addStepCallback(stepIndex, callback) {
-    this.steps[stepIndex] = callback;
+  addStep(steps) {
+    this.steps.push(steps);
   }
 
   setCurrentStep(step) {
@@ -19,8 +21,9 @@ export default class StepManager {
   triggerStep() {
     if (this.lastTriggeredStep !== this.currentStep) {
       this.lastTriggeredStep = this.currentStep;
+
       if (this.steps[this.currentStep]) {
-        this.steps[this.currentStep](); // Execute the step callback
+        this.steps[this.currentStep].update(); // Execute the step callback
       }
     }
   }

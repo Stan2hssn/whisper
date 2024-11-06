@@ -23,6 +23,11 @@ canvas {
   left: 0;
   z-index: 0;
 }
+
+.tp-dfwv {
+  z-index: 2;
+}
+
 .container {
   box-sizing: border-box;
   position: relative;
@@ -34,25 +39,83 @@ canvas {
 
   font-family: "inter", sans-serif;
   font-weight: 600;
-
-  border: 2px solid red;
 }
 
 .emotions {
   display: flex;
   flex-direction: column;
+  justify-content: end;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+
+  z-index: 1;
+}
+
+.emotionsIntensity {
+  box-sizing: border-box;
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  align-self: flex-end;
+  right: 4vw;
+  top: 50%;
+
+  width: 1vw;
+  height: 70%;
+
+  transform: translate3d(0, -50%, 0);
+
+  background-color: rgb(255, 112, 112);
+}
+
+.dragContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+
+  transform: translate3d(0, -0%, 0);
+
+  /* background-color: red; */
+}
+
+.flame {
+  position: absolute; /* Allows movement within the container */
+  width: 50px; /* Adjust as needed */
+  height: 50px; /* Adjust as needed */
+  border-radius: 50%;
+  background-color: white;
+  cursor: grab;
+  transform-origin: 50% 50%; /* Center the transform origin */
+  transform: translate3d(
+    0,
+    0,
+    0
+  ); /* Initialize the transform with a percentage */
+}
+
+.emotionsColor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   padding-bottom: 5vw;
 
   gap: 1rem;
-  z-index: 1;
 
   color: white;
-
-  opacity: 0;
 }
 
 .carousel {
@@ -85,6 +148,8 @@ canvas {
 
   overflow: hidden;
 
+  gap: 1rem;
+
   cursor: default;
   list-style-type: none;
   word-break: keep-all;
@@ -99,7 +164,9 @@ canvas {
 
   padding: 1rem 0rem;
 
-  transition: all 0.5s ease;
+  gap: 1rem;
+
+  transition: all 0.5s ease-in-out;
 }
 
 .emotionsTranslated {
@@ -114,6 +181,8 @@ canvas {
 
   overflow: hidden;
 
+  gap: 1rem;
+
   cursor: default;
   list-style-type: none;
   word-break: keep-all;
@@ -127,9 +196,11 @@ canvas {
 
   padding: 1rem 0rem;
 
+  gap: 1rem;
+
   text-transform: uppercase;
 
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
 }
 
 .emotionDescription {
