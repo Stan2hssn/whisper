@@ -166,10 +166,6 @@ export default class {
 
   debug(debug) {
     if (debug === null) return;
-    console.log(
-      " this.mainlanternsMaterial.uniforms.uTransition.value",
-      this.mainlanternsMaterial.uniforms.uTransition,
-    );
 
     this.debug = debug;
 

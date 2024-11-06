@@ -20,6 +20,4 @@ const Library = {
   Videos: {},
 };
 
-console.log("Library:", Library);
-
 export default Library;
